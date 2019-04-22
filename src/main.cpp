@@ -5,6 +5,9 @@
 #include "json.hpp"
 #include "PID.h"
 
+#define PID_EVAL
+//#define PID_SEARCH
+
 // for convenience
 using nlohmann::json;
 using std::string;
@@ -36,9 +39,9 @@ int main() {
   /**
    * TODO: Initialize the pid variable.
    */
-  double Kp_0 = 0.15;
-  double Ki_0 = 0.0005;
-  double Kd_0 = 4.3;
+  double Kp_0 = 0.080;
+  double Ki_0 = 0.0;
+  double Kd_0 = 1.0;
 
   PID pid;
   pid.Init(Kp_0, Ki_0, Kd_0);
@@ -58,8 +61,8 @@ int main() {
         if (event == "telemetry") {
           // j[1] is the data JSON object
           double cte = std::stod(j[1]["cte"].get<string>());
-          double speed = std::stod(j[1]["speed"].get<string>());
-          double angle = std::stod(j[1]["steering_angle"].get<string>());
+          //double speed = std::stod(j[1]["speed"].get<string>());
+          //double angle = std::stod(j[1]["steering_angle"].get<string>());
           double steer_value;
           /**
            * Calculate steering value here, remember the steering value is
@@ -67,9 +70,18 @@ int main() {
            * NOTE: Feel free to play around with the throttle and speed.
            *   Maybe use another PID controller to control the speed!
            */
+          #ifdef PID_EVAL
           pid.UpdateError(cte);
           steer_value = pid.TotalError();
-          
+          #endif
+
+          #ifdef PID_SEARCH
+          pid.UpdateError(cte);
+          if ((pid.Counter>=1) && (pid.Counter<100)) {
+            pid.Twiddle(0.2);
+          }
+          steer_value = pid.TotalError();
+          #endif
           // DEBUG
           std::cout << "CTE: " << cte << " Steering Value: " << steer_value 
                     << std::endl;
