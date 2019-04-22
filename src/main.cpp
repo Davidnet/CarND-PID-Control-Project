@@ -40,7 +40,7 @@ int main() {
    * TODO: Initialize the pid variable.
    */
   double Kp_0 = 0.080;
-  double Ki_0 = 0.0;
+  double Ki_0 = 0.00005;
   double Kd_0 = 1.0;
 
   PID pid;
