@@ -31,6 +31,17 @@ class PID {
    */
   double TotalError();
 
+  /**
+   * Have twiddle algorithm to run, and get good values for the PID
+   * @output Average PID error
+   */
+  void Twiddle(double tol);
+
+ public:
+  int Counter;
+  double p[3] = {0,0,0};
+  double dp[3] = {0.1, 0.1, 0.1};
+
  private:
   /**
    * PID Errors
