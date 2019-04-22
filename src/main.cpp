@@ -33,16 +33,15 @@ string hasData(string s) {
 int main() {
   uWS::Hub h;
 
-  PID pid;
   /**
    * TODO: Initialize the pid variable.
    */
-  double Kp_init = 0.15;
-  double Ki_init = 0.0005;
-  double Kd_init = 4.3;
+  double Kp_0 = 0.15;
+  double Ki_0 = 0.0005;
+  double Kd_0 = 4.3;
 
   PID pid;
-  pid.Init(Kp_init, Ki_init, Kd_init);
+  pid.Init(Kp_0, Ki_0, Kd_0);
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
                      uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
